@@ -1,10 +1,9 @@
 var mongoose = require('mongoose');
 
 var History = new mongoose.Schema({
-    id: Number,
-    data: Number,
+    data: String,
     date: Date,
-    sensor: { type: mongoose.Schema.Types.ObjectId, ref: 'Sensors' }
+    idSensor: Number
 });
 
 module.exports = mongoose.model('History', History);
