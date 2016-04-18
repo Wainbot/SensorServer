@@ -104,4 +104,49 @@ router.get('/update/:idDevice/:idSensor/history', function (req, res) {
     });
 });
 
+
+router.get('/boiler', function(req, res) {
+	var data = {date:'18/04/16', temp:22};
+	res.json(data);
+});
+
+router.get('/alarm', function(req, res) {
+	var data = {
+		data:{
+			date:"18/04/2016", 
+			localisation: 'porte 1'
+	}};
+	res.json(data);
+});
+
+router.get('/alert', function(req, res) {
+	var data = var data = {
+		data:{
+                date: '18/04/16',
+                type: 'Chaudière',
+                cause: 'Température trop élevée (50°C)'
+		}
+	};
+	res.json(data);
+});
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
