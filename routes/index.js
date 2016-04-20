@@ -1,7 +1,7 @@
 var express = require('express');
 var request = require('request');
 
-var router  = express.Router();
+var router = express.Router();
 
 var Devices = require('../models/Devices.js');
 var Sensors = require('../models/Sensors.js');
@@ -21,7 +21,7 @@ router.get('/devices', function (req, res) {
  * Retourne le Device
  */
 router.get('/devices/:id', function (req, res) {
-    Devices.find({ id: req.params.id }, function (err, data) {
+    Devices.find({id: req.params.id}, function (err, data) {
         if (err) res.send(err);
         res.json(data);
     });
@@ -31,7 +31,7 @@ router.get('/devices/:id', function (req, res) {
  * Retourne la liste des Sensors du Device
  */
 router.get('/devices/:id/sensors', function (req, res) {
-    Sensors.find({ idDevice: req.params.id }, function (err, data) {
+    Sensors.find({idDevice: req.params.id}, function (err, data) {
         if (err) res.send(err);
         res.json(data);
     });
@@ -51,7 +51,7 @@ router.get('/sensors', function (req, res) {
  * Retourne le Sensor
  */
 router.get('/sensors/:id', function (req, res) {
-    Sensors.find({ id: req.params.id }, function (err, data) {
+    Sensors.find({id: req.params.id}, function (err, data) {
         if (err) res.send(err);
         res.json(data);
     });
@@ -61,7 +61,7 @@ router.get('/sensors/:id', function (req, res) {
  * Retourne l'historique d'un Sensor
  */
 router.get('/sensors/:id/history', function (req, res) {
-    History.find({ idSensor: req.params.id }, function (err, data) {
+    History.find({idSensor: req.params.id}, function (err, data) {
         if (err) res.send(err);
         res.json(data);
     });
@@ -91,7 +91,7 @@ router.get('/update/:idDevice/:idSensor/history', function (req, res) {
         if (error) {
             res.send(error);
         } else {
-            JSON.parse(body).data.history.forEach(function(val) {
+            JSON.parse(body).data.history.forEach(function (val) {
                 History.create({
                     data: val.data,
                     date: val.date,
@@ -104,30 +104,77 @@ router.get('/update/:idDevice/:idSensor/history', function (req, res) {
     });
 });
 
-
-router.get('/boiler', function(req, res) {
-	var data = {date:'18/04/16', temp:22};
-	res.json(data);
+/**
+ * Retourne l'état de la chaudière
+ */
+router.get('/boiler', function (req, res) {
+    var data = {
+        date: new Date(),
+        temp: 22
+    };
+    res.json(data);
 });
 
-router.get('/alarm', function(req, res) {
-	var data = {
-		data:{
-			date:"18/04/2016", 
-			localisation: 'porte 1'
-	}};
-	res.json(data);
+/**
+ * Retourne l'état de l'alarme
+ */
+router.get('/alarm', function (req, res) {
+    var data = {
+        date: new Date(2016, 3, 20, 7, 0, 0),
+        localisation: 'porte 1',
+        history: [
+            {
+                date: new Date(2016, 3, 20, 6, 0, 0),
+                localisation: 'porte 1'
+            },
+            {
+                date: new Date(2016, 3, 19, 21, 0, 0),
+                localisation: 'porte 1'
+            },
+            {
+                date: new Date(2016, 3, 19, 20, 0, 0),
+                localisation: 'porte 1'
+            },
+            {
+                date: new Date(2016, 3, 19, 19, 0, 0),
+                localisation: 'porte 1'
+            },
+            {
+                date: new Date(2016, 3, 18, 19, 0, 0),
+                localisation: 'porte 1'
+            }
+        ]
+    };
+    res.json(data);
 });
 
-router.get('/alert', function(req, res) {
-	var data = var data = {
-		data:{
-                date: '18/04/16',
-                type: 'Chaudière',
-                cause: 'Température trop élevée (50°C)'
-		}
-	};
-	res.json(data);
+/**
+ * Retourne les X dernières alertes
+ */
+router.get('/alert', function (req, res) {
+    var data = [
+        {
+            date: new Date(2016, 3, 19, 2, 0, 0),
+            type: 'Chaudière',
+            cause: 'Température trop élevée (50°C)'
+        },
+        {
+            date: new Date(2016, 3, 18, 22, 0, 0),
+            type: 'Chaudière',
+            cause: 'Température trop élevée (54°C)'
+        },
+        {
+            date: new Date(2016, 3, 18, 19, 0, 0),
+            type: 'Chaudière',
+            cause: 'Température trop élevée (52°C)'
+        },
+        {
+            date: new Date(2016, 3, 17, 12, 0, 0),
+            type: 'Chaudière',
+            cause: 'Température trop faible (12°C)'
+        }
+    ];
+    res.json(data);
 });
 
 module.exports = router;
